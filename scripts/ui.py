@@ -49,7 +49,7 @@ def on_ui_tabs():
                         # face_index_slider = gr.Slider(minimum=0, maximum=20, step=1, value=0, label="Face index",
                         #                             info="index of face to swap, left face in image is 0")
 
-                    # with gr.Column():
+                    with gr.Column():
                         # with gr.Row():
                         #     language = gr.Dropdown(
                         #         speaker_language, label="Language", info="Select the language to use",
@@ -68,7 +68,7 @@ def on_ui_tabs():
                         # with gr.Row():
                         #     audio_example = gr.Audio(label="Audio example",
                         #                              value="https://dl.suno-models.io/bark/prompts/prompt_audio/en_speaker_0.mp3")
-                        # with gr.Column():
+                        with gr.Column():
                         #     suno_prompt = gr.Textbox(label="Prompt", placeholder="Prompt", lines=5, type="text",info="Don't forget that bark can only generate 14 seconds of audio at a time, so for long text, you need to use [split] to split the text into multiple prompts")
                         #     temperature = gr.Slider(label="Generation temperature", minimum=0.01, maximum=1, step=0.01, value=0.7,
                         #                           info="1.0 more diverse, 0.0 more conservative")
