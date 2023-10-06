@@ -182,7 +182,7 @@ def on_ui_tabs():
 
         generate_btn.click(
             generate,
-            [video, face_index_slider, audio, checkpoint, face_restore_model, no_smooth, only_mouth, resize_factor, mouth_mask_dilatation,
+            [video, audio, checkpoint, face_restore_model, no_smooth, only_mouth, resize_factor, mouth_mask_dilatation,
              erode_face_mask, mask_blur, pad_top, pad_bottom, pad_left, pad_right, active_debug, code_former_weight],
             [wav2lip_video, restore_video, result])
 
