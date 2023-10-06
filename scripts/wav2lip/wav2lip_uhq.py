@@ -281,10 +281,10 @@ class Wav2LipUHQ:
             else:
                 if os.path.exists(self.wav2lip_folder + "/resume.json"):
                     os.remove(self.wav2lip_folder + "/resume.json")
-            if self.face_swap_img is None:
-                face_swap_output = None
-            else:
-                face_swap_output = self.wav2lip_folder + "/output/faceswap/video.mp4"
+            # if self.face_swap_img is None:
+            #     face_swap_output = None
+            # else:
+            #     face_swap_output = self.wav2lip_folder + "/output/faceswap/video.mp4"
             return [face_swap_output,
                     self.wav2lip_folder + "/results/result_voice.mp4",
                     self.wav2lip_folder + "/output/output_video_enhanced.mp4",
