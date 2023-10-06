@@ -5,7 +5,7 @@ from scripts.wav2lip.w2l import W2l
 from scripts.wav2lip.wav2lip_uhq import Wav2LipUHQ
 from modules.shared import state
 
-from scripts.faceswap.swap import FaceSwap
+# from scripts.faceswap.swap import FaceSwap
 
 speaker_id = "v2/en_speaker_0"
 
@@ -45,9 +45,9 @@ def on_ui_tabs():
                         video = gr.Video(label="Video", format="mp4",
                                          info="Filepath of video/image that contains faces to use",
                                          file_types=["mp4", "png", "jpg", "jpeg", "avi"])
-                        face_swap_img = gr.Image(label="Face Swap", type="pil")
-                        face_index_slider = gr.Slider(minimum=0, maximum=20, step=1, value=0, label="Face index",
-                                                    info="index of face to swap, left face in image is 0")
+                        # face_swap_img = gr.Image(label="Face Swap", type="pil")
+                        # face_index_slider = gr.Slider(minimum=0, maximum=20, step=1, value=0, label="Face index",
+                        #                             info="index of face to swap, left face in image is 0")
 
                     # with gr.Column():
                         # with gr.Row():
@@ -119,7 +119,7 @@ def on_ui_tabs():
             with gr.Column():
                 with gr.Tabs(elem_id="wav2lip_generated"):
                     with gr.Row():
-                        faceswap_video = gr.Video(label="faceSwap video", format="mp4")
+                        # faceswap_video = gr.Video(label="faceSwap video", format="mp4")
                         wav2lip_video = gr.Video(label="Wav2Lip video", format="mp4")
                         restore_video = gr.Video(label="Restored face video", format="mp4")
                         result = gr.Video(label="Generated video", format="mp4")
@@ -131,18 +131,18 @@ def on_ui_tabs():
             state.interrupt()
             return "Interrupted"
 
-        def gen_audio(suno_prompt, temperature, silence, low_vram):
-            global speaker_id
-            if suno_prompt is None or speaker_id is None:
-                return
-            tts = TTS(suno_prompt, speaker_id, temperature, silence,None, low_vram)
-            wav = tts.generate()
-            # delete tts object to free memory
-            del tts
+        # def gen_audio(suno_prompt, temperature, silence, low_vram):
+        #     global speaker_id
+        #     if suno_prompt is None or speaker_id is None:
+        #         return
+        #     tts = TTS(suno_prompt, speaker_id, temperature, silence,None, low_vram)
+        #     wav = tts.generate()
+        #     # delete tts object to free memory
+        #     del tts
 
-            return wav
+        #     return wav
 
-        def generate(video, face_swap_img, face_index, audio, checkpoint, face_restore_model, no_smooth, only_mouth, resize_factor,
+        def generate(video, audio, checkpoint, face_restore_model, no_smooth, only_mouth, resize_factor,
                      mouth_mask_dilatation, erode_face_mask, mask_blur, pad_top, pad_bottom, pad_left, pad_right,
                      active_debug, code_former_weight):
             state.begin()
@@ -151,46 +151,46 @@ def on_ui_tabs():
                 print("[ERROR] Please select a video and an audio file")
                 return
 
-            if face_swap_img is not None:
-                face_swap = FaceSwap(video, audio, face_index, face_swap_img, resize_factor, face_restore_model, code_former_weight)
-                video = face_swap.generate()
+            # if face_swap_img is not None:
+            #     face_swap = FaceSwap(video, audio, face_index, face_swap_img, resize_factor, face_restore_model, code_former_weight)
+            #     video = face_swap.generate()
 
             w2l = W2l(video, audio, checkpoint, no_smooth, resize_factor, pad_top, pad_bottom, pad_left,
                       pad_right, face_swap_img)
             w2l.execute()
 
             w2luhq = Wav2LipUHQ(video, face_restore_model, mouth_mask_dilatation, erode_face_mask, mask_blur,
-                                only_mouth, face_swap_img, resize_factor, code_former_weight, active_debug)
+                                only_mouth, resize_factor, code_former_weight, active_debug)
 
             return w2luhq.execute()
 
-        def resume(video,face_swap_img, face_restore_model, only_mouth, resize_factor, mouth_mask_dilatation, erode_face_mask,
+        def resume(video, face_restore_model, only_mouth, resize_factor, mouth_mask_dilatation, erode_face_mask,
                    mask_blur, active_debug, code_former_weight):
             state.begin()
-            if face_swap_img is not None:
-                face_swap = FaceSwap()
-                video = face_swap.resume()
+            # if face_swap_img is not None:
+            #     face_swap = FaceSwap()
+            #     video = face_swap.resume()
             w2luhq = Wav2LipUHQ(video, face_restore_model, mouth_mask_dilatation, erode_face_mask, mask_blur,
-                                only_mouth, face_swap_img, resize_factor, code_former_weight, active_debug)
+                                only_mouth, resize_factor, code_former_weight, active_debug)
 
             return w2luhq.execute(True)
 
-        generate_audio.click(
-            gen_audio,
-            [suno_prompt, temperature, silence, low_vram],
-            audio)
+        # generate_audio.click(
+        #     gen_audio,
+        #     [suno_prompt, temperature, silence, low_vram],
+        #     audio)
 
         generate_btn.click(
             generate,
-            [video, face_swap_img, face_index_slider, audio, checkpoint, face_restore_model, no_smooth, only_mouth, resize_factor, mouth_mask_dilatation,
+            [video, face_index_slider, audio, checkpoint, face_restore_model, no_smooth, only_mouth, resize_factor, mouth_mask_dilatation,
              erode_face_mask, mask_blur, pad_top, pad_bottom, pad_left, pad_right, active_debug, code_former_weight],
-            [faceswap_video, wav2lip_video, restore_video, result])
+            [wav2lip_video, restore_video, result])
 
         resume_btn.click(
             resume,
-            [video,face_swap_img, face_restore_model, only_mouth, resize_factor, mouth_mask_dilatation, erode_face_mask,
+            [video, face_restore_model, only_mouth, resize_factor, mouth_mask_dilatation, erode_face_mask,
              mask_blur, active_debug, code_former_weight],
-            [faceswap_video, wav2lip_video, restore_video, result])
+            [wav2lip_video, restore_video, result])
 
         interrupt_btn.click(on_interrupt)
 
