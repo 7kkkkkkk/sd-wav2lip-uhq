@@ -74,7 +74,7 @@ def on_ui_tabs():
                         #                           info="1.0 more diverse, 0.0 more conservative")
                         #     silence = gr.Slider(label="Silence", minimum=0, maximum=1, step=0.01, value=0.25, info="Silence after [split] in seconde")
                         #     generate_audio = gr.Button("Generate")
-                        #     audio = gr.Audio(label="Speech", type="filepath")
+                            audio = gr.Audio(label="Speech", type="filepath")
 
                         # # if language changed, update speaker list
                         # language.change(update_speaker_list, [language, gender], [speaker, audio_example])
