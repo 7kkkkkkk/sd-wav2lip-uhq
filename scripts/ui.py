@@ -156,7 +156,7 @@ def on_ui_tabs():
             #     video = face_swap.generate()
 
             w2l = W2l(video, audio, checkpoint, no_smooth, resize_factor, pad_top, pad_bottom, pad_left,
-                      pad_right, face_swap_img)
+                      pad_right)
             w2l.execute()
 
             w2luhq = Wav2LipUHQ(video, face_restore_model, mouth_mask_dilatation, erode_face_mask, mask_blur,
