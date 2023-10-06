@@ -4,7 +4,7 @@ import gradio as gr
 from scripts.wav2lip.w2l import W2l
 from scripts.wav2lip.wav2lip_uhq import Wav2LipUHQ
 from modules.shared import state
-from scripts.bark.tts import TTS
+
 from scripts.faceswap.swap import FaceSwap
 
 speaker_id = "v2/en_speaker_0"
