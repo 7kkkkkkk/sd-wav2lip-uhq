@@ -12,28 +12,28 @@ speaker_id = "v2/en_speaker_0"
 
 def on_ui_tabs():
     wav2lip_uhq_sys_extend()
-    speaker_json = json.load(open("extensions/sd-wav2lip-uhq/scripts/bark/speakers.json", "r"))
-    speaker_list = [speaker["name"] for speaker in speaker_json if
-                    speaker["language"] == "English" and speaker["gender"] == "Male"]
-    speaker_language = list(set([speaker["language"] for speaker in speaker_json]))
-    speaker_gender = list(set([speaker["gender"] for speaker in speaker_json]))
+    # speaker_json = json.load(open("extensions/sd-wav2lip-uhq/scripts/bark/speakers.json", "r"))
+    # speaker_list = [speaker["name"] for speaker in speaker_json if
+    #                 speaker["language"] == "English" and speaker["gender"] == "Male"]
+    # speaker_language = list(set([speaker["language"] for speaker in speaker_json]))
+    # speaker_gender = list(set([speaker["gender"] for speaker in speaker_json]))
 
-    def update_speaker_list(new_language, new_gender):
-        # Mettez à jour la liste des speakers basée sur la langue et le genre sélectionnés
-        global speaker_id
-        new_speaker_list = [speaker["name"] for speaker in speaker_json if
-                            speaker["language"] == new_language and speaker["gender"] == new_gender]
-        audio_mp3 = [speaker["prompt_audio"] for speaker in speaker_json if speaker["name"] in new_speaker_list[0]][0]
-        speaker_id = [speaker["id"] for speaker in speaker_json if speaker["name"] in new_speaker_list[0]][0]
-        return [gr.Dropdown.update(choices=new_speaker_list, value=new_speaker_list[0]),
-                gr.Audio.update(value=audio_mp3), gr.Dropdown.update(value=new_language)]
+    # def update_speaker_list(new_language, new_gender):
+    #     # Mettez à jour la liste des speakers basée sur la langue et le genre sélectionnés
+    #     global speaker_id
+    #     new_speaker_list = [speaker["name"] for speaker in speaker_json if
+    #                         speaker["language"] == new_language and speaker["gender"] == new_gender]
+    #     audio_mp3 = [speaker["prompt_audio"] for speaker in speaker_json if speaker["name"] in new_speaker_list[0]][0]
+    #     speaker_id = [speaker["id"] for speaker in speaker_json if speaker["name"] in new_speaker_list[0]][0]
+    #     return [gr.Dropdown.update(choices=new_speaker_list, value=new_speaker_list[0]),
+    #             gr.Audio.update(value=audio_mp3), gr.Dropdown.update(value=new_language)]
 
-    def select_speaker(speaker):
-        # Mettez à jour l'audio basé sur le speaker sélectionné
-        global speaker_id
-        audio_mp3 = [sp["prompt_audio"] for sp in speaker_json if sp["name"] == speaker][0]
-        speaker_id = [sp["id"] for sp in speaker_json if sp["name"] == speaker][0]
-        return gr.Audio.update(value=audio_mp3)
+    # def select_speaker(speaker):
+    #     # Mettez à jour l'audio basé sur le speaker sélectionné
+    #     global speaker_id
+    #     audio_mp3 = [sp["prompt_audio"] for sp in speaker_json if sp["name"] == speaker][0]
+    #     speaker_id = [sp["id"] for sp in speaker_json if sp["name"] == speaker][0]
+    #     return gr.Audio.update(value=audio_mp3)
 
     with gr.Blocks(analytics_enabled=False) as wav2lip_uhq_interface:
         gr.Markdown(
@@ -49,37 +49,37 @@ def on_ui_tabs():
                         face_index_slider = gr.Slider(minimum=0, maximum=20, step=1, value=0, label="Face index",
                                                     info="index of face to swap, left face in image is 0")
 
-                    with gr.Column():
-                        with gr.Row():
-                            language = gr.Dropdown(
-                                speaker_language, label="Language", info="Select the language to use",
-                                value="English"
-                            )
-                            gender = gr.Dropdown(
-                                speaker_gender, label="Gender", info="Select gender", value="Male"
-                            )
-                        with gr.Row():
-                            speaker = gr.Dropdown(
-                                speaker_list, label="Speaker", info="Select the speaker to use",
-                                value=speaker_list[0]
-                            )
-                            low_vram = gr.Radio(["False", "True"], value="True", label="Low VRAM",
-                                                info="Less than 16GB of VRAM, set True")
-                        with gr.Row():
-                            audio_example = gr.Audio(label="Audio example",
-                                                     value="https://dl.suno-models.io/bark/prompts/prompt_audio/en_speaker_0.mp3")
-                        with gr.Column():
-                            suno_prompt = gr.Textbox(label="Prompt", placeholder="Prompt", lines=5, type="text",info="Don't forget that bark can only generate 14 seconds of audio at a time, so for long text, you need to use [split] to split the text into multiple prompts")
-                            temperature = gr.Slider(label="Generation temperature", minimum=0.01, maximum=1, step=0.01, value=0.7,
-                                                  info="1.0 more diverse, 0.0 more conservative")
-                            silence = gr.Slider(label="Silence", minimum=0, maximum=1, step=0.01, value=0.25, info="Silence after [split] in seconde")
-                            generate_audio = gr.Button("Generate")
-                            audio = gr.Audio(label="Speech", type="filepath")
+                    # with gr.Column():
+                        # with gr.Row():
+                        #     language = gr.Dropdown(
+                        #         speaker_language, label="Language", info="Select the language to use",
+                        #         value="English"
+                        #     )
+                        #     gender = gr.Dropdown(
+                        #         speaker_gender, label="Gender", info="Select gender", value="Male"
+                        #     )
+                        # with gr.Row():
+                        #     speaker = gr.Dropdown(
+                        #         speaker_list, label="Speaker", info="Select the speaker to use",
+                        #         value=speaker_list[0]
+                        #     )
+                        #     low_vram = gr.Radio(["False", "True"], value="True", label="Low VRAM",
+                        #                         info="Less than 16GB of VRAM, set True")
+                        # with gr.Row():
+                        #     audio_example = gr.Audio(label="Audio example",
+                        #                              value="https://dl.suno-models.io/bark/prompts/prompt_audio/en_speaker_0.mp3")
+                        # with gr.Column():
+                        #     suno_prompt = gr.Textbox(label="Prompt", placeholder="Prompt", lines=5, type="text",info="Don't forget that bark can only generate 14 seconds of audio at a time, so for long text, you need to use [split] to split the text into multiple prompts")
+                        #     temperature = gr.Slider(label="Generation temperature", minimum=0.01, maximum=1, step=0.01, value=0.7,
+                        #                           info="1.0 more diverse, 0.0 more conservative")
+                        #     silence = gr.Slider(label="Silence", minimum=0, maximum=1, step=0.01, value=0.25, info="Silence after [split] in seconde")
+                        #     generate_audio = gr.Button("Generate")
+                        #     audio = gr.Audio(label="Speech", type="filepath")
 
-                        # if language changed, update speaker list
-                        language.change(update_speaker_list, [language, gender], [speaker, audio_example])
-                        gender.change(update_speaker_list, [language, gender], [speaker, audio_example])
-                        speaker.change(select_speaker, speaker, audio_example)
+                        # # if language changed, update speaker list
+                        # language.change(update_speaker_list, [language, gender], [speaker, audio_example])
+                        # gender.change(update_speaker_list, [language, gender], [speaker, audio_example])
+                        # speaker.change(select_speaker, speaker, audio_example)
 
                 with gr.Row():
                     checkpoint = gr.Radio(["wav2lip", "wav2lip_gan"], value="wav2lip_gan", label="Checkpoint",
