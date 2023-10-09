@@ -15,7 +15,7 @@ from modules import devices
 
 class Wav2LipUHQ:
     def __init__(self, face, face_restore_model, mouth_mask_dilatation, erode_face_mask, mask_blur, only_mouth,
-                 face_swap_img, resize_factor, code_former_weight, debug=False):
+                 resize_factor, code_former_weight, debug=False):
         self.wav2lip_folder = os.path.sep.join(os.path.abspath(__file__).split(os.path.sep)[:-1])
         self.original_video = face
         self.face_restore_model = face_restore_model
@@ -23,7 +23,6 @@ class Wav2LipUHQ:
         self.erode_face_mask = erode_face_mask
         self.mask_blur = mask_blur
         self.only_mouth = only_mouth
-        self.face_swap_img = face_swap_img
         self.w2l_video = self.wav2lip_folder + '/results/result_voice.mp4'
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.ffmpeg_binary = self.find_ffmpeg_binary()
